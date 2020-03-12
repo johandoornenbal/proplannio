@@ -49,6 +49,7 @@
             </testResource>
         </testResources>
         <plugins>
+<!--
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
@@ -72,6 +73,7 @@
                     </execution>
                 </executions>
             </plugin>
+-->
             <!-- running: mvn spring-boot:run -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
