@@ -105,7 +105,7 @@ public class Project_IntegTest extends ProjectModuleIntegTestAbstract {
             });
 
             // then
-            assertThat(cause.getMessage(), containsString("Exclamation mark is not allowed."));
+            assertThat(cause.getMessage(), containsString("Exclamation mark is not allowed"));
         }
     }
 
