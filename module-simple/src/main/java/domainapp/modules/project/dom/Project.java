@@ -1,10 +1,14 @@
 package domainapp.modules.project.dom;
 
 import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
+import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -25,7 +29,7 @@ import lombok.val;
 import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
 import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
-@javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE, schema = "simple")
+@javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE, schema = "project")
 @javax.jdo.annotations.DatastoreIdentity(strategy=IdGeneratorStrategy.IDENTITY, column="id")
 @javax.jdo.annotations.Version(strategy= VersionStrategy.DATE_TIME, column="version")
 @javax.jdo.annotations.Unique(name="Project_name_UNQ", members = {"name"})
@@ -59,6 +63,9 @@ public class Project implements Comparable<Project> {
     @lombok.Getter @lombok.Setter
     @Notes private String notes;
 
+    @lombok.Getter @lombok.Setter
+    @Persistent(mappedBy = "project", dependentElement = "true")
+    private SortedSet<Product> products = new TreeSet<>();
 
     public static class UpdateNameActionDomainEvent extends Project.ActionDomainEvent {}
     @Action(semantics = IDEMPOTENT,

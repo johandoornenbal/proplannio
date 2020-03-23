@@ -48,7 +48,7 @@ public class Products {
         product.setReference(reference);
         product.setName(name);
         product.setProject(project);
-        product.setParent(parent);
+        product.setParentProduct(parent);
         return repositoryService.persist(product);
     }
 
