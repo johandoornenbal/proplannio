@@ -34,7 +34,7 @@ public class Project_IntegTest extends ProjectModuleIntegTestAbstract {
     @BeforeEach
     public void setUp() {
         // given
-        project = fixtureScripts.runPersona(Project_persona.FOO);
+        project = fixtureScripts.runPersona(Project_persona.P1);
     }
 
     public static class name extends Project_IntegTest {
