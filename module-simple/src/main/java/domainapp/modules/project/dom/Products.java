@@ -1,5 +1,6 @@
 package domainapp.modules.project.dom;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -37,6 +38,7 @@ public class Products {
     public static class ActionDomainEvent extends ProjectModule.ActionDomainEvent<Products> {}
 
     public static class CreateActionDomainEvent extends ActionDomainEvent {}
+
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, domainEvent = CreateActionDomainEvent.class)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
     public Product create(
@@ -51,7 +53,6 @@ public class Products {
         product.setParentProduct(parent);
         return repositoryService.persist(product);
     }
-
     public List<Project> autoComplete2Create(final String name){
         return projects.findByName(name);
     }
@@ -68,6 +69,28 @@ public class Products {
         );
         return q.setParameter("name", name)
                 .executeList();
+    }
+
+    public List<Product> findChildren(final Product product){
+        final List<Product> result = new ArrayList<>();
+        final List<Product> directChildren = findByParent(product);
+        result.addAll(directChildren);
+        for (Product p: directChildren){
+            final List<Product> productList = findChildren(p);
+            if (!productList.isEmpty()) {
+                result.addAll(productList);
+            }
+        }
+        return result;
+    }
+
+    public List<Product> findByParent(final Product product) {
+        JDOQLTypedQuery<Product> q = isisJdoSupport.newTypesafeQuery(Product.class);
+        final QProduct cand = QProduct.candidate();
+        q = q.filter(
+                cand.parentProduct.eq(product)
+        );
+        return q.executeList();
     }
 
     public static class FindByReferenceActionDomainEvent extends ActionDomainEvent {}

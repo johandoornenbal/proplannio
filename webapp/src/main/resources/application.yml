@@ -64,6 +64,9 @@ isis:
         show-chooser: true
         show-drop-down-on-footer: true
 
+  testing:
+    fixtures:
+      initial-script: domainapp.webapp.application.fixture.scenarios.DomainAppDemo
 
   persistence:
     jdo-datanucleus:

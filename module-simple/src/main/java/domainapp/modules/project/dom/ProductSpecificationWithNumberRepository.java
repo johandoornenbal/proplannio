@@ -3,7 +3,6 @@ package domainapp.modules.project.dom;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.jdo.JDOQLTypedQuery;
 
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
@@ -11,45 +10,40 @@ import org.springframework.stereotype.Service;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.BookmarkPolicy;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.PromptStyle;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.persistence.jdo.applib.services.IsisJdoSupport_v3_2;
 
-import domainapp.modules.project.ProjectModule;
-import domainapp.modules.simple.types.Name;
-
 @Service
-public class ProductSpecificationWithDateRepository {
+public class ProductSpecificationWithNumberRepository {
 
     private final RepositoryService repositoryService;
     private final IsisJdoSupport_v3_2 isisJdoSupport;
 
     @Inject
-    public ProductSpecificationWithDateRepository(RepositoryService repositoryService, IsisJdoSupport_v3_2 isisJdoSupport) {
+    public ProductSpecificationWithNumberRepository(RepositoryService repositoryService, IsisJdoSupport_v3_2 isisJdoSupport) {
         this.repositoryService = repositoryService;
         this.isisJdoSupport = isisJdoSupport;
     }
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(promptStyle = PromptStyle.DIALOG_SIDEBAR)
-    public ProductSpecificationWithDate create(
+    public ProductSpecificationWithNumber create(
             final Product product,
             final SpecificationType type,
-            final LocalDate date) {
-        ProductSpecificationWithDate spec = new ProductSpecificationWithDate();
+            final Integer number) {
+        ProductSpecificationWithNumber spec = new ProductSpecificationWithNumber();
         spec.setProduct(product);
         spec.setType(type);
-        spec.setDate(date);
+        spec.setNumber(number);
         return repositoryService.persist(spec);
     }
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-    public List<ProductSpecificationWithDate> listAll() {
-        return repositoryService.allInstances(ProductSpecificationWithDate.class);
+    public List<ProductSpecificationWithNumber> listAll() {
+        return repositoryService.allInstances(ProductSpecificationWithNumber.class);
     }
 
 }

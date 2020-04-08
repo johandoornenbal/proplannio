@@ -9,6 +9,8 @@ import org.apache.isis.applib.annotation.HomePage;
 import org.apache.isis.applib.annotation.Nature;
 import org.apache.isis.applib.services.i18n.TranslatableString;
 
+import domainapp.modules.project.dom.Project;
+import domainapp.modules.project.dom.Projects;
 import domainapp.modules.simple.dom.so.SimpleObject;
 import domainapp.modules.simple.dom.so.SimpleObjects;
 
@@ -20,12 +22,12 @@ import domainapp.modules.simple.dom.so.SimpleObjects;
 public class HomePageViewModel {
 
     public TranslatableString title() {
-        return TranslatableString.tr("{num} objects", "num", getObjects().size());
+        return TranslatableString.tr("{num} projects", "num", getObjects().size());
     }
 
-    public List<SimpleObject> getObjects() {
-        return simpleObjects.listAll();
+    public List<Project> getObjects() {
+        return projects.listAll();
     }
 
-    @Inject SimpleObjects simpleObjects;
+    @Inject Projects projects;
 }

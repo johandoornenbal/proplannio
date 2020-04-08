@@ -1,5 +1,6 @@
 package domainapp.webapp;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
@@ -11,11 +12,14 @@ import org.apache.isis.extensions.flyway.impl.IsisModuleExtFlywayImpl;
 import org.apache.isis.persistence.jdo.datanucleus5.IsisModuleJdoDataNucleus5;
 import org.apache.isis.security.shiro.IsisModuleSecurityShiro;
 import org.apache.isis.testing.fixtures.applib.IsisModuleTestingFixturesApplib;
+import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureScripts;
+import org.apache.isis.testing.fixtures.applib.fixturespec.FixtureScriptsSpecification;
 import org.apache.isis.testing.h2console.ui.IsisModuleTestingH2ConsoleUi;
 import org.apache.isis.viewer.restfulobjects.jaxrsresteasy4.IsisModuleViewerRestfulObjectsJaxrsResteasy4;
 import org.apache.isis.viewer.wicket.viewer.IsisModuleViewerWicketViewer;
 
 import domainapp.webapp.application.ApplicationModule;
+import domainapp.webapp.application.fixture.DomainAppFixtureScriptsSpecificationProvider;
 import domainapp.webapp.application.fixture.scenarios.DomainAppDemo;
 
 @Configuration

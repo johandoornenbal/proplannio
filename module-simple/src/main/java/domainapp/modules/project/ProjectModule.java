@@ -10,6 +10,7 @@ import org.apache.isis.testing.fixtures.applib.teardown.TeardownFixtureAbstract;
 
 import domainapp.modules.project.dom.Product;
 import domainapp.modules.project.dom.ProductSpecificationWithDate;
+import domainapp.modules.project.dom.ProductSpecificationWithNumber;
 import domainapp.modules.project.dom.Project;
 import domainapp.modules.simple.dom.so.SimpleObject;
 
@@ -23,6 +24,7 @@ public class ProjectModule implements ModuleWithFixtures {
         return new TeardownFixtureAbstract() {
             @Override
             protected void execute(ExecutionContext executionContext) {
+                deleteFrom(ProductSpecificationWithNumber.class);
                 deleteFrom(ProductSpecificationWithDate.class);
                 deleteFrom(Product.class);
                 deleteFrom(Project.class);

@@ -11,6 +11,7 @@ import org.apache.isis.testing.fixtures.applib.fixturescripts.BuilderScriptWithR
 
 import domainapp.modules.project.actions.Project_addProduct;
 import domainapp.modules.project.dom.Product;
+import domainapp.modules.project.dom.Products;
 import domainapp.modules.project.dom.Project;
 import domainapp.modules.project.dom.Projects;
 import lombok.Getter;
@@ -34,12 +35,18 @@ public class ProjectBuilder extends BuilderScriptWithResult<Project> {
 
         final Project project = wrap(projects).create(name);
         productSpecs.forEach(ps->{
-            Product product = null;
+            Product parentProduct = null;
             if (ps.getParentReference()!=null){
-                product = project.getProducts().stream()
+                parentProduct = project.getProducts().stream()
                         .filter(p -> p.getReference().equals(ps.getParentReference())).findFirst().orElse(null);
             }
-            factoryService.mixin(Project_addProduct.class, project).$$(ps.getReference(), ps.getName(), product);
+            final Product product = products.create(ps.getReference(), ps.getName(), project, parentProduct);
+            if (ps.getDeadline()!=null){
+                product.createDeadline(ps.getDeadline());
+            }
+            if (ps.getEffortInWorkingDays()!=null){
+                product.createEffort(ps.getEffortInWorkingDays());
+            }
         });
 
         return project;
@@ -49,6 +56,6 @@ public class ProjectBuilder extends BuilderScriptWithResult<Project> {
 
     @Inject Projects projects;
 
-    @Inject FactoryService factoryService;
+    @Inject Products products;
 
 }
