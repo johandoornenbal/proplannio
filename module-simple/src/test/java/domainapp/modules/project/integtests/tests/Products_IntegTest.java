@@ -4,9 +4,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
+import domainapp.modules.project.ProjectModule;
 import domainapp.modules.project.actions.Project_addProduct;
 import domainapp.modules.project.dom.Product;
 import domainapp.modules.project.dom.Products;
@@ -53,6 +58,12 @@ public class Products_IntegTest extends ProjectModuleIntegTestAbstract {
     }
 
     public static class Finders extends Products_IntegTest {
+
+        // TODO: this does not help ... Are there problems (FK constraints f.e.) that are not surfaced?
+        @BeforeEach
+        public void tearDown(){
+            products.listAll().forEach(p->repositoryService.removeAndFlush(p));
+        }
 
         // This one fails when not run in isolation
         //
