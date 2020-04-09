@@ -58,7 +58,7 @@ public class Products {
     }
 
     public List<Product> autoComplete3Create(final String name){
-        return products.findByName(name);
+        return findByName(name);
     }
 
     public List<Product> findByName(final String name) {
@@ -117,8 +117,5 @@ public class Products {
 
     @Inject
     Projects projects;
-
-    @Inject
-    Products products;
 
 }

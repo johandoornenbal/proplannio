@@ -54,8 +54,10 @@ public class Products_IntegTest extends ProjectModuleIntegTestAbstract {
 
     public static class Finders extends Products_IntegTest {
 
+        // This one fails when not run in isolation
+        //
         @Test
-        public void findersWork() {
+        public void findersWork_problematic() {
 
             // given
             final Project project = projects.create("P");
@@ -71,6 +73,37 @@ public class Products_IntegTest extends ProjectModuleIntegTestAbstract {
             // and when
             mixin(Project_addProduct.class, project).$$("PD1A", "Product 1A", pd1);
             mixin(Project_addProduct.class, project).$$("PD1B", "Product 1B", pd1);
+            transactionService.flushTransaction(); // does not surface the issue
+            // commenting in TransactionServic#nextTransaction produces an error ...
+            // java.lang.AssertionError at org.apache.isis.persistence.jdo.datanucleus5.persistence.IsisTransactionJdo.markAsAborted(IsisTransactionJdo.java:412)
+            //  transactionService.nextTransaction();
+
+            final List<Product> directChildrenOfPd1 = products.findByParent(pd1);
+            // then
+            assertThat(directChildrenOfPd1).hasSize(2);
+
+        }
+
+        @Test
+        public void findersWork_ok() {
+
+            // given
+            final Project project = projects.create("Q");
+            mixin(Project_addProduct.class, project).$$("QPD1", "Product 1", null);
+            mixin(Project_addProduct.class, project).$$("QPD2", "Product 2", null);
+
+            // when
+            final Product pd1 = products.findByReference("QPD1");
+
+            // then
+            assertThat(pd1).isNotNull();
+
+            // and when
+            mixin(Project_addProduct.class, project).$$("QPD1A", "Product 1A", pd1);
+            mixin(Project_addProduct.class, project).$$("QPD1B", "Product 1B", pd1);
+            // commenting in TransactionServic#nextTransaction produces an error ...
+            // java.lang.AssertionError at org.apache.isis.persistence.jdo.datanucleus5.persistence.IsisTransactionJdo.markAsAborted(IsisTransactionJdo.java:412)
+            //  transactionService.nextTransaction();
 
             final List<Product> directChildrenOfPd1 = products.findByParent(pd1);
             // then
